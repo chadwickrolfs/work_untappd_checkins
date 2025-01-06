@@ -9,18 +9,20 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-db = Path("db/checkins.json")
-with open(db, "r") as dbh:
-    checkins = json.load(dbh)
+db_dir = "db"
+db_path = Path(db_dir)
+just_checkins_file = "just_checkins.json"
+just_checkins_path = Path(just_checkins_file)
+checkins = json.loads((db_path/just_checkins_path).read_text())
 
 
 @app.get("/")
 async def get0():
-    return checkins[0-5]
+    return checkins[0:5]
 
 
 @app.get("/next")
-async def fakedb(skip: int = 0, limit: int = 10):
+async def nexts(skip: int = 0, limit: int = 10):
     """ http "127.0.0.1:8000/next?skip=20&limit=5" """
     error = []
     checkins_last = len(checkins) - 1
@@ -35,3 +37,8 @@ async def fakedb(skip: int = 0, limit: int = 10):
         return {"error": " ".join(error)}
 
     return checkins[skip: skip + limit]
+
+
+@app.get("/all")
+async def all():
+    return checkins
