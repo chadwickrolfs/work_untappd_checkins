@@ -18,7 +18,11 @@ checkins = json.loads((db_path/just_checkins_path).read_text())
 
 @app.get("/")
 async def get0():
-    return checkins[0:5]
+    return {
+        k: v for k, v in checkins.items()
+        if k in [k for k in checkins.keys()][0:5]
+    }
+    # return checkins[0:5]
 
 
 @app.get("/next")
@@ -36,7 +40,11 @@ async def nexts(skip: int = 0, limit: int = 10):
     if error:
         return {"error": " ".join(error)}
 
-    return checkins[skip: skip + limit]
+    return {
+        k: v for k, v in checkins.items()
+        if k in [k for k in checkins.keys()][skip: skip + limit]
+    }
+    # return checkins[skip: skip + limit]
 
 
 @app.get("/all")

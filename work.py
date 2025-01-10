@@ -16,7 +16,8 @@ just_checkins = [
     for checkin_list in all_checkins
     for checkin in checkin_list["response"]["checkins"]["items"]
 ]
-bierlijst = []
+# bierlijst = []
+bierlijst = {}
 for checkin in just_checkins:
     venue = checkin.get("venue")
     venue_id = 0 if venue == [] else venue.get("venue_id")
@@ -32,7 +33,9 @@ for checkin in just_checkins:
     venue_lon = 0.0 if venue == [] else venue.get(
         "location").get("lng")
 
-    bierlijst.append({
+    # bierlijst.append({
+    #     "checkin_id": checkin["checkin_id"],
+    bierlijst[checkin["checkin_id"]] = {
         "checkin_id": checkin["checkin_id"],
         "checkin_datetime": checkin["created_at"],
         "checkin_comment": checkin["checkin_comment"],
@@ -53,6 +56,7 @@ for checkin in just_checkins:
         "venue_country": venue_country,
         "venue_latitude": venue_lat,
         "venue_longitude": venue_lon,
-    })
+    }
+    # )
 
 (db_path/just_checkins_path).write_text(json.dumps(bierlijst))
