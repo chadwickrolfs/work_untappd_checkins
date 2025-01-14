@@ -11,9 +11,9 @@ app = FastAPI()
 
 db_dir = "db"
 db_path = Path(db_dir)
-just_checkins_file = "just_checkins.json"
-just_checkins_path = Path(just_checkins_file)
-checkins = json.loads((db_path/just_checkins_path).read_text())
+serve_checkins_file = "serve_checkins.json"
+serve_checkins_path = Path(serve_checkins_file)
+checkins = json.loads((db_path/serve_checkins_path).read_text())
 
 
 @app.get("/")

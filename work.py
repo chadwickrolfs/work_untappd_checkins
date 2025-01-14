@@ -5,9 +5,12 @@ import json
 db_dir = "db"
 db_path = Path(db_dir)
 checkins_file = "checkins.json"
+serve_checkins_file = "serve_checkins.json"
+new_checkins_file = "new_checkins.json"
+
 checkins_path = Path(checkins_file)
-just_checkins_file = "just_checkins.json"
-just_checkins_path = Path(just_checkins_file)
+serve_checkins_path = Path(serve_checkins_file)
+new_checkins_path = Path(new_checkins_file)
 
 all_checkins = json.loads((db_path/checkins_path).read_text())
 
@@ -16,6 +19,10 @@ just_checkins = [
     for checkin_list in all_checkins
     for checkin in checkin_list["response"]["checkins"]["items"]
 ]
+
+if new_checkins_path.exists():
+    just_checkins += json.loads((db_path/new_checkins_path).read_text())
+
 # bierlijst = []
 bierlijst = {}
 for checkin in just_checkins:
@@ -59,4 +66,4 @@ for checkin in just_checkins:
     }
     # )
 
-(db_path/just_checkins_path).write_text(json.dumps(bierlijst))
+(db_path/serve_checkins_path).write_text(json.dumps(bierlijst))
